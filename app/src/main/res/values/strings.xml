@@ -4,7 +4,7 @@
     <string name="base_url">http://192.168.1.123:80/Survey/api/</string>
     <string name="log_out">Log out</string>
     <string name="next_question">Next Question</string>
-    <string name="encrypt">Encrypt Data</string>
+    <string name="encrypt">Encrypt</string>
     <string name="submit">Submit</string>
     <string name="expiry_date_string">Expiry Date: </string>
 </resources>
