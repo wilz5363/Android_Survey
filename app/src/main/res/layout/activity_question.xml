@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.chanw.surveypsm.QuestionActivity">
+
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="question"
+        android:layout_marginBottom="40dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:padding="40dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_button_choices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_question"
+        android:gravity="center"
+        android:weightSum="1">
+        <Button
+            android:id="@+id/btn_first_choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="btn1"
+            android:layout_marginRight="20dp"
+            android:layout_weight="0.40" />
+
+        <Button
+            android:id="@+id/btn_second_choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="btn2"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="0.40" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_plain_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_button_choices"
+        android:text="Plain Text"
+        android:layout_margin="20dp"/>
+
+    <TextView
+        android:id="@+id/tv_plain_text_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_plain_text"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/btn_encrypt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/encrypt"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_below="@id/tv_plain_text_result"/>
+    <TextView
+        android:id="@+id/tv_encrypt_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_encrypt"
+        android:text="Encrypted Text"
+        android:layout_margin="20dp"/>
+    <TextView
+        android:id="@+id/tv_encrypt_text_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_encrypt_text"
+        android:layout_margin="20dp"/>
+
+
+    <Button
+        android:id="@+id/btn_next_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/next_question"/>
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/submit"
+        android:visibility="gone"/>
+
+</RelativeLayout>
