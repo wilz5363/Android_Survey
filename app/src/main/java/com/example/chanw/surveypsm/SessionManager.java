@@ -62,4 +62,7 @@ public class SessionManager {
         _context.startActivity(i);
     }
 
+    public String getUserEmail() {
+        return mPref.getString(KEY_EMAIL, "");
+    }
 }

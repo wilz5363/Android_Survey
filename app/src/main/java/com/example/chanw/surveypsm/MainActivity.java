@@ -13,10 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.chanw.surveypsm.Adapter.SurveyListAdapter;
 import com.example.chanw.surveypsm.Model.Survey;
+import com.example.chanw.surveypsm.Model.UserSessions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     TextView mNoSurveyTextView;
 
     ArrayList<Survey> surveys;
+    Survey survey;
+    SurveyListAdapter adapter;
+
+    RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         session = new SessionManager(getApplicationContext());
-        session.checkLogin();
+        if (!session.isLoggedIn()) {
+            session.checkLogin();
+            finish();
+        }
+
+        layout = (RelativeLayout) findViewById(R.id.content_main_layout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,11 +63,15 @@ public class MainActivity extends AppCompatActivity {
         mSurveyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Survey survey = surveys.get(position);
+                survey = surveys.get(position);
 //                Snackbar.make(view, survey.getSurveyName()+"\n"+survey.getDescription(),Snackbar.LENGTH_LONG).setAction("No action", null).show();
-                Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-                intent.putExtra("surveyId",survey.getId());
-                startActivity(intent);
+
+                UserSessions userSessions = new UserSessions();
+                userSessions.setEmail(session.getUserEmail());
+                userSessions.setSurveyId(survey.getId());
+                new CreateUserSession().execute(userSessions);
+
+
 
             }
         });
@@ -77,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -158,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(returResult){
                 Log.e(TAG, "Create new custom adapter");
-                SurveyListAdapter adapter = new SurveyListAdapter(getApplicationContext(), surveys);
+                adapter = new SurveyListAdapter(getApplicationContext(), surveys);
 
                 Log.e(TAG, "Setting adapter");
                 mSurveyListView.setAdapter(adapter);
@@ -167,6 +188,38 @@ public class MainActivity extends AppCompatActivity {
                 mNoSurveyTextView.setVisibility(View.VISIBLE);
             }
 
+        }
+    }
+
+    class CreateUserSession extends AsyncTask<UserSessions, Void, String>{
+
+
+        @Override
+        protected String doInBackground(UserSessions... userSessionses) {
+
+            HttpHandler handler = new HttpHandler();
+            String url = getString(R.string.base_url)+"/createUserSession.php";
+            Log.e(TAG, "User Session Data: "+userSessionses[0].getSurveyId());
+
+            JSONObject userSessionJsonObject = new JSONObject();
+            try {
+                userSessionJsonObject.put("email", userSessionses[0].getEmail());
+                userSessionJsonObject.put("surveyId", userSessionses[0].getSurveyId());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            return handler.postServiceCall(url, userSessionJsonObject);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Snackbar.make(layout, s, Snackbar.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+            intent.putExtra("surveyId",survey.getId());
+            startActivity(intent);
         }
     }
 

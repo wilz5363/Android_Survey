@@ -10,6 +10,7 @@ public class Answer {
     private String answer;
     private int selectionCount;
     private int questionId;
+    private int status;
 
     public Answer(int id, String answer) {
         this.id = id;
@@ -46,5 +47,13 @@ public class Answer {
 
     public void setQuestionId(int questionId) {
         this.questionId = questionId;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

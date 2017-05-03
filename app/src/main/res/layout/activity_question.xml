@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="btn1"
             android:layout_marginRight="20dp"
-            android:layout_weight="0.40" />
+            android:layout_weight="0.40"/>
 
         <Button
             android:id="@+id/btn_second_choice"

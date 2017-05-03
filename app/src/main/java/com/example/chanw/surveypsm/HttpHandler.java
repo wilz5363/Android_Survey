@@ -28,10 +28,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class HttpHandler {
 
     private static final String TAG = HttpHandler.class.getSimpleName();
-
+    private static HttpURLConnection conn = null;
     public String makeServiceCall(String regUrl){
         String response = null;
-        HttpURLConnection conn = null;
+
         try {
             URL url = new URL(regUrl);
             conn = (HttpURLConnection) url.openConnection();
@@ -61,6 +61,8 @@ public class HttpHandler {
     public String postServiceCall(String regUrl, JSONObject postDataParams){
         String response = null;
         HttpURLConnection conn = null;
+        Log.e(TAG, "URL: "+regUrl);
+        Log.e(TAG, "Params: "+postDataParams.toString());
         try{
             URL url = new URL(regUrl);
             conn = (HttpURLConnection) url.openConnection();
@@ -81,9 +83,7 @@ public class HttpHandler {
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
 
-                BufferedReader in=new BufferedReader(new
-                        InputStreamReader(
-                        conn.getInputStream()));
+                BufferedReader in=new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
                 StringBuffer sb = new StringBuffer("");
                 String line="";
@@ -95,6 +95,7 @@ public class HttpHandler {
                 }
 
                 in.close();
+                Log.e(TAG,"Post service call: "+ sb.toString());
                 return sb.toString();
 
             }
@@ -110,6 +111,51 @@ public class HttpHandler {
             return new String("Exception: " + e.getMessage());
         }
     }
+
+    public String postServiceCallWithReturnJson(String regUrl, JSONObject postDataParams){
+        String response = null;
+        HttpURLConnection conn = null;
+        Log.e(TAG, "URL: "+regUrl);
+        Log.e(TAG, "Params: "+postDataParams.toString());
+        try{
+            URL url = new URL(regUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(getPostDataString(postDataParams));
+
+            writer.flush();
+            writer.close();
+            os.close();
+
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                InputStream in = new BufferedInputStream(conn.getInputStream());
+                response = convertStreamToString(in);
+                return response;
+
+            }
+            else {
+                return new String("false : "+responseCode);
+            }
+
+        } catch (MalformedURLException e) {
+            return new String("URLException: " + e.getMessage());
+        } catch (IOException e) {
+            return new String("IOException: " + e.getMessage());
+        } catch (Exception e) {
+            return new String("Exception: " + e.getMessage());
+        }
+    }
+
+
 
 
     private String convertStreamToString(InputStream in) {
@@ -156,6 +202,7 @@ public class HttpHandler {
             result.append(URLEncoder.encode(value.toString(), "UTF-8"));
 
         }
+        Log.e(TAG, "Get Post Data String: "+ result.toString());
         return result.toString();
     }
 
