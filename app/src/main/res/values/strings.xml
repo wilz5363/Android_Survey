@@ -6,7 +6,7 @@
     <!--<string name="base_url">https//192.168.8.103:80/Survey/api/</string>-->
     <string name="log_out">Log out</string>
     <string name="next_question">Next Question</string>
-    <string name="encrypt">Encrypt</string>
-    <string name="submit">Submit Answer</string>
-    <string name="expiry_date_string">Expiry Date: </string>
-</resources>
+<string name="encrypt">Encrypt</string>
+<string name="submit">Submit Answer</string>
+<string name="expiry_date_string">Expiry Date: </string>
+    </resources>

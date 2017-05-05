@@ -11,23 +11,24 @@
         android:id="@+id/tv_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="question"
+        android:text=""
         android:layout_marginBottom="40dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:padding="40dp"/>
+        android:padding="20dp"/>
 
     <LinearLayout
         android:id="@+id/ll_button_choices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_question"
         android:gravity="center"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_below="@+id/tv_question"
+        android:layout_marginTop="-40dp">
         <Button
             android:id="@+id/btn_first_choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="btn1"
+            android:text=""
             android:layout_marginRight="20dp"
             android:layout_weight="0.40"/>
 
@@ -35,7 +36,7 @@
             android:id="@+id/btn_second_choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="btn2"
+            android:text=""
             android:layout_marginLeft="20dp"
             android:layout_weight="0.40" />
     </LinearLayout>
@@ -46,14 +47,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_button_choices"
         android:text="Plain Text"
-        android:layout_margin="20dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:id="@+id/tv_plain_text_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_plain_text"
-        android:layout_margin="20dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
     <Button
         android:id="@+id/btn_encrypt"
@@ -69,13 +76,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_encrypt"
         android:text="Encrypted Text"
-        android:layout_margin="20dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"/>
     <TextView
         android:id="@+id/tv_encrypt_text_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_encrypt_text"
-        android:layout_margin="20dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"/>
 
 
     <Button

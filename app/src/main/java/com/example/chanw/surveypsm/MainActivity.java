@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chanw.surveypsm.Adapter.SurveyListAdapter;
 import com.example.chanw.surveypsm.Model.Survey;
@@ -94,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapter.notifyDataSetChanged();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        adapter.notifyDataSetChanged();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -216,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Snackbar.make(layout, s, Snackbar.LENGTH_LONG).show();
+            Log.e(TAG, "Create Session Post Execute: "+s.toString());
+            Toast.makeText(getApplicationContext(),s.toString(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
             intent.putExtra("surveyId",survey.getId());
             startActivity(intent);

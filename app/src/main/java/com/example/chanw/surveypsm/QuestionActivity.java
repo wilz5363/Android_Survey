@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.chanw.surveypsm.Model.Answer;
 import com.example.chanw.surveypsm.Model.Question;
-import com.example.chanw.surveypsm.Model.QuestionUserAnswered;
+import com.example.chanw.surveypsm.ViewModel.CryptoAnswerVM;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,15 +84,9 @@ public class QuestionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (buttonMemory != 0) {
 //                    new PostAnswer().execute(buttonMemory);
-                    QuestionUserAnswered answered = new QuestionUserAnswered();
-                    answered.setEmail(sessionManager.getUserEmail());
-                    answered.setQuestionId(mQuestion.getId());
-                    answered.setChoiceSelection(mEncryptedTextResult.getText().toString());
-                    answered.setChoiceSelectionHint(key);
-                    answered.setLastQuestion(false);
-                    answered.setSurveyId(mSelectedSurveyId);
+                    CryptoAnswerVM vm = new CryptoAnswerVM(buttonMemory, mEncryptedTextResult.getText().toString(), key);
                     mLastQuestion = false;
-                    new PostAnswer().execute(answered);
+                    new PostAnswer().execute(vm);
 
                 } else {
                     Snackbar.make(view, "Please choose an answer before continue to the next question.", Snackbar.LENGTH_LONG).setAction("No action", null).show();
@@ -110,19 +104,11 @@ public class QuestionActivity extends AppCompatActivity {
                     Snackbar.make(view, "Please choose an answer before continue to the next question.", Snackbar.LENGTH_LONG).setAction("No action", null).show();
 
                 } else {
-                    QuestionUserAnswered answered = new QuestionUserAnswered();
-                    answered.setEmail(sessionManager.getUserEmail());
-                    answered.setQuestionId(mQuestion.getId());
-                    answered.setChoiceSelection(mEncryptedTextResult.getText().toString());
-                    answered.setChoiceSelectionHint(key);
-                    answered.setLastQuestion(true);
-                    answered.setSurveyId(mSelectedSurveyId);
 
-                    Log.e(TAG, "When User Submit last question: "+answered.isLastQuestion());
+                    CryptoAnswerVM vm = new CryptoAnswerVM(buttonMemory, mEncryptedTextResult.getText().toString(), key);
                     mLastQuestion = true;
-                    new PostAnswer().execute(answered);
-                    Snackbar.make(view, "Thanks for the response and have a nice day!", Snackbar.LENGTH_LONG).setAction("No action", null).show();
-                    finish();
+                    new PostAnswer().execute(vm);
+
                 }
 
             }
@@ -137,17 +123,19 @@ public class QuestionActivity extends AppCompatActivity {
                 if (buttonMemory == 0){
                     Snackbar.make(view, "Please choose an answer before continue to encrypt the plaintext", Snackbar.LENGTH_SHORT).setAction("No action", null).show();
                 }else{
-                    String values[] = new String[3];
-                    values[0] = sessionManager.getUserEmail();
-                    values[1] = String.valueOf(mSelectedSurveyId);
-                    values[2] = String.valueOf(buttonMemory);
+                    String value = String.valueOf(buttonMemory);
 
-                    new EncryptPlainText().execute(values);
+                    new EncryptPlainText().execute(value);
                 }
             }
         });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Please finish the survey before exiting.", Toast.LENGTH_SHORT).show();
     }
 
     private void NextQuestion(){
@@ -232,11 +220,9 @@ public class QuestionActivity extends AppCompatActivity {
             Log.e(TAG, "Url for Encrypt PlainText: "+url);
             JSONObject params = new JSONObject();
             try{
-                params.put("surveyId", strings[1]);
-                params.put("email", strings[0]);
-                params.put("selectionValue", strings[2]);
+                params.put("answerId", strings[0]);
 
-                Log.e(TAG,"Create new JSONObject: "+strings[2]);
+                Log.e(TAG,"Create new JSONObject: "+strings[0]);
             }catch (JSONException e){
                 Log.e(TAG, "Ecrypt PlainText: "+e.getMessage());
             }
@@ -265,36 +251,20 @@ public class QuestionActivity extends AppCompatActivity {
         }
     }
 
-    class PostAnswer extends AsyncTask<QuestionUserAnswered, Void, String>{
-
+    class PostAnswer extends AsyncTask<CryptoAnswerVM, Void, String>{
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(QuestionUserAnswered... answereds) {
-
+        protected String doInBackground(CryptoAnswerVM... cryptoAnswerVMs) {
             String url = getString(R.string.base_url)+"postAnswer.php";
             JSONObject params = new JSONObject();
             try{
-
-                params.put("questionId", answereds[0].getQuestionId());
-                params.put("cipherText", answereds[0].getChoiceSelection());
-                params.put("email", answereds[0].getEmail());
-                params.put("key", answereds[0].getChoiceSelectionHint());
-                params.put("lastQuestion", answereds[0].isLastQuestion());
-                params.put("surveyId", answereds[0].getSurveyId());
-
-
+                params.put("answerId", cryptoAnswerVMs[0].getAnswerId());
+                params.put("cipherText", cryptoAnswerVMs[0].getCipherText());
+                params.put("key", cryptoAnswerVMs[0].getKey());
             }catch (JSONException je){
-                Log.e(TAG, "JSON Exception"+je.getMessage());
+                Log.e(TAG, "JSON Exception @ POSTANSWER : "+je.getMessage());
             }
-
-
             return handler.postServiceCall(url, params);
-    }
-
+        }
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
@@ -302,6 +272,7 @@ public class QuestionActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             Log.e(TAG,"Submit answers on PostAnswer: "+result.toString());
             if(mLastQuestion){
+                Toast.makeText(getApplicationContext(), "Thanks for the response and have a nice day!", Toast.LENGTH_LONG).show();
                 finish();
             }else{
                 NextQuestion();
