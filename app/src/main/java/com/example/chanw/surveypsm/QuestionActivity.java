@@ -84,7 +84,8 @@ public class QuestionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (buttonMemory != 0) {
 //                    new PostAnswer().execute(buttonMemory);
-                    CryptoAnswerVM vm = new CryptoAnswerVM(buttonMemory, mEncryptedTextResult.getText().toString(), key);
+                    CryptoAnswerVM vm = new CryptoAnswerVM(buttonMemory, mEncryptedTextResult.getText().toString(), key, mQuestion.getId(), sessionManager.getUserEmail(), false);
+                    Toast.makeText(QuestionActivity.this, key.toString(), Toast.LENGTH_LONG).show();
                     mLastQuestion = false;
                     new PostAnswer().execute(vm);
 
@@ -105,7 +106,8 @@ public class QuestionActivity extends AppCompatActivity {
 
                 } else {
 
-                    CryptoAnswerVM vm = new CryptoAnswerVM(buttonMemory, mEncryptedTextResult.getText().toString(), key);
+                    CryptoAnswerVM vm = new CryptoAnswerVM(buttonMemory, mEncryptedTextResult.getText().toString(), key, mQuestion.getId(), sessionManager.getUserEmail(), true);
+                    Toast.makeText(QuestionActivity.this, key.toString(), Toast.LENGTH_LONG).show();
                     mLastQuestion = true;
                     new PostAnswer().execute(vm);
 
@@ -260,6 +262,9 @@ public class QuestionActivity extends AppCompatActivity {
                 params.put("answerId", cryptoAnswerVMs[0].getAnswerId());
                 params.put("cipherText", cryptoAnswerVMs[0].getCipherText());
                 params.put("key", cryptoAnswerVMs[0].getKey());
+                params.put("questionId", cryptoAnswerVMs[0].getQuestionId());
+                params.put("email", cryptoAnswerVMs[0].getEmail());
+                params.put("lastQuestion", cryptoAnswerVMs[0].isLastQuestion());
             }catch (JSONException je){
                 Log.e(TAG, "JSON Exception @ POSTANSWER : "+je.getMessage());
             }

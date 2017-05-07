@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SurveyPSM</string>
+    <string name="app_name">3S</string>
     <string name="action_settings">Settings</string>
     <!--<string name="base_url">https://7a7f667979.dataplicity.io/Survey/api/</string>-->
     <string name="base_url">https://psmsurvey.000webhostapp.com/api/</string>
