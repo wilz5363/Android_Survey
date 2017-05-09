@@ -137,7 +137,15 @@ public class MainActivity extends AppCompatActivity {
 
             HttpHandler httpHandler = new HttpHandler();
             String url = getString(R.string.base_url)+"getSurveys.php";
-            String jsonResultString = httpHandler.makeServiceCall(url);
+            JSONObject params = new JSONObject();
+            try {
+                params.put("Email", session.getUserEmail());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            String jsonResultString = httpHandler.postServiceCallWithReturnJson(url, params);
 
 
             Log.e(TAG, "Result from getSurvey.php:"+jsonResultString);
