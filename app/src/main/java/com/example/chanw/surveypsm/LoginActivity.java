@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chanw.surveypsm.Model.User;
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog pdLoading = null;
     Button mSignInBtn;
     EditText mEmailEt, mPasswordEt;
+    TextView mRegister;
 
 
     @Override
@@ -54,6 +56,17 @@ public class LoginActivity extends AppCompatActivity {
                 new UserSignInAsync().execute(user);
             }
         });
+
+
+        mRegister = (TextView) findViewById(R.id.tv_register);
+        mRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(registerIntent);
+            }
+        });
+
     }
 
     class UserSignInAsync extends AsyncTask<User, Void, String> {
