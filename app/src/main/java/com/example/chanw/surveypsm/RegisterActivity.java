@@ -39,14 +39,15 @@ public class RegisterActivity extends AppCompatActivity {
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mConfirmPassword.getText().toString() != mPassword.getText().toString()){
+                if(!mConfirmPassword.getText().toString().equals( mPassword.getText().toString())){
                     mConfirmPassword.setText("");
                     mPassword.setText("");
-                    Snackbar.make(view, "Both ensure both Passwords are the same.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Please ensure both Passwords are the same.", Snackbar.LENGTH_LONG).show();
                 }else{
                     user = new User();
                     user.setEmail(mEmail.getText().toString());
                     user.setPassword(mPassword.getText().toString());
+                    new Register().execute(user);
                     pdLoading = new ProgressDialog(RegisterActivity.this);
                     pdLoading.setMessage("Signing In...");
                     pdLoading.show();
@@ -61,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         protected String doInBackground(User... users) {
 
             HttpHandler httpHandler = new HttpHandler();
-            String url = getString(R.string.base_url) + "userRegoster.php";
+            String url = getString(R.string.base_url) + "userRegister.php";
 
             JSONObject params = new JSONObject();
             try {
@@ -78,9 +79,8 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
+            pdLoading.dismiss();
             if(s.equals("true")){
-                pdLoading.dismiss();
                 sessionManager = new SessionManager(getApplicationContext());
                 sessionManager.createLoginSession(user.getEmail());
 
@@ -92,7 +92,8 @@ public class RegisterActivity extends AppCompatActivity {
                 mEmail.setText("");
                 mPassword.setText("");
                 mConfirmPassword.setText("");
-                Toast.makeText(getApplicationContext(), "Email has been registered before.", Toast.LENGTH_LONG);
+
+                Toast.makeText(getApplicationContext(), "Email has been registered before.", Toast.LENGTH_LONG).show();
             }
         }
     }
