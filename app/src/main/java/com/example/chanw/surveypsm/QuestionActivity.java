@@ -274,7 +274,7 @@ public class QuestionActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             Log.e(TAG,"Submit answers on PostAnswer: "+result.toString());
             if(mLastQuestion){
                 Toast.makeText(getApplicationContext(), "Thanks for the response and have a nice day!", Toast.LENGTH_LONG).show();
