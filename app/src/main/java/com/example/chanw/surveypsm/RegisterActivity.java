@@ -86,14 +86,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+
+                setResult(0);
                 finish();
+
             }else{
 
                 mEmail.setText("");
                 mPassword.setText("");
                 mConfirmPassword.setText("");
 
-                Toast.makeText(getApplicationContext(), "Email has been registered before.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Email been registered before. Try login instead", Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -27,6 +27,8 @@ import java.net.URL;
 public class LoginActivity extends AppCompatActivity {
     private String TAG = LoginActivity.class.getSimpleName();
 
+    private int REQUEST_EXIT = 0;
+    private int REQUEST_OK = 1;
     SessionManager sessionManager;
     ProgressDialog pdLoading = null;
     Button mSignInBtn;
@@ -63,9 +65,19 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(registerIntent);
+                startActivityForResult(registerIntent,REQUEST_EXIT);
             }
         });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_EXIT){
+            finish();
+        }
 
     }
 
@@ -89,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
             String url = getString(R.string.base_url) + "getSignIn.php?email=" + users[0].getEmail() + "&password=" + users[0].getPassword();
             String jsonResult = httpHandler.makeServiceCall(url);
+
             Log.e(TAG, "Result from json:" + jsonResult);
             if (jsonResult != null) {
 

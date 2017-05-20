@@ -85,7 +85,7 @@ public class QuestionActivity extends AppCompatActivity {
                 if (buttonMemory != 0) {
 //                    new PostAnswer().execute(buttonMemory);
                     CryptoAnswerVM vm = new CryptoAnswerVM(buttonMemory, mEncryptedTextResult.getText().toString(), key, mQuestion.getId(), sessionManager.getUserEmail(), false);
-                    Toast.makeText(QuestionActivity.this, key.toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(QuestionActivity.this, key.toString(), Toast.LENGTH_LONG).show();
                     mLastQuestion = false;
                     new PostAnswer().execute(vm);
 
@@ -107,7 +107,7 @@ public class QuestionActivity extends AppCompatActivity {
                 } else {
 
                     CryptoAnswerVM vm = new CryptoAnswerVM(buttonMemory, mEncryptedTextResult.getText().toString(), key, mQuestion.getId(), sessionManager.getUserEmail(), true);
-                    Toast.makeText(QuestionActivity.this, key.toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(QuestionActivity.this, key.toString(), Toast.LENGTH_LONG).show();
                     mLastQuestion = true;
                     new PostAnswer().execute(vm);
 
